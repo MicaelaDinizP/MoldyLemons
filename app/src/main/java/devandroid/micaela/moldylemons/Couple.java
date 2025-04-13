@@ -2,11 +2,13 @@ package devandroid.micaela.moldylemons;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "couples")
+@Entity(tableName = "couples",
+        indices = {@Index(value = "login", unique = true)})
 public class Couple {
 
     @PrimaryKey(autoGenerate = true)
