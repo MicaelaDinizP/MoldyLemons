@@ -29,13 +29,22 @@ public class Serie extends Media {
     public int getSeasons() {
         return seasons;
     }
+
     public void setSeasons(int seasons) {
+        if (seasons < 0) {
+            throw new IllegalArgumentException("Seasons must be greater than or equal to zero.");
+        }
         this.seasons = seasons;
     }
+
     public int getTotalEpisodes() {
         return totalEpisodes;
     }
+
     public void setTotalEpisodes(int totalEpisodes) {
+        if (totalEpisodes < 0) {
+            throw new IllegalArgumentException("Total episodes must be greater than or equal to zero.");
+        }
         this.totalEpisodes = totalEpisodes;
     }
 }
