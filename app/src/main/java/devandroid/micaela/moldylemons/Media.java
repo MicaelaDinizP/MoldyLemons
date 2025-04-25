@@ -1,6 +1,7 @@
 package devandroid.micaela.moldylemons;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class Media {
@@ -9,35 +10,44 @@ public abstract class Media {
     private String description;
     private List<Genre> genres;
     private List<Review> reviews;
-    private final MediaType mediaType;
+    protected final MediaType mediaType;
 
     public Media( int id, String title, String description, List<Genre> genres ){
+        this.mediaType = defineMediaType();
         setId(id);
         setTitle(title);
         setDescription(description);
         setGenres(genres);
         this.reviews = new ArrayList<>();
-        this.mediaType = defineMediaType();
     }
     public Media(String title, String description, List<Genre> genres ){
+        this.mediaType = defineMediaType();
         setTitle(title);
         setDescription(description);
         setGenres(genres);
         this.reviews = new ArrayList<>();
-        this.mediaType = defineMediaType();
+
     }
     protected abstract MediaType defineMediaType();
     protected boolean isValidGenre(Genre genre){
         return genre != null && (genre.getMediaType() == MediaType.ALL || genre.getMediaType() == this.getMediaType());
     }
     public void addGenre(Genre genre) {
-        if (genre == null) return;
+        if(this.genres == null){
+            this.genres = new ArrayList<>();
+        }
+        if (genre == null) {
+            throw new IllegalArgumentException("Genre cannot be null.");
+        }
         if (!isValidGenre(genre)) {
             throw new IllegalArgumentException("Invalid genre for this type of media.");
         }
-        genres.add(genre);
-    }
+        if (this.genres.contains(genre)) {
+            throw new IllegalArgumentException("Genre already added.");
+        }
 
+        this.genres.add(genre);
+    }
     public void removeGenre(Genre genre) {
         if (genre == null) {
             throw new IllegalArgumentException("Genre cannot be null.");
@@ -49,9 +59,10 @@ public abstract class Media {
 
         this.genres.remove(genre);
     }
-
-    public void addReview(Review review) {
-        if (review == null) return;
+     public void addReview(Review review) {
+        if (review == null) {
+            throw new IllegalArgumentException("Review cannot be null.");
+        }
         for (Review r : reviews) {
             if (r.getWrittenBy().equals(review.getWrittenBy())) {
                 throw new IllegalArgumentException("User has already submitted a review for this media.");
@@ -70,11 +81,15 @@ public abstract class Media {
             throw new IllegalArgumentException("Author name cannot be null or empty.");
         }
 
-        boolean removed = reviews.removeIf(r -> r.getWrittenBy().equals(authorName));
-
-        if (!removed) {
-            throw new IllegalArgumentException("No review found for the given author.");
+        Iterator<Review> iterator = reviews.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getWrittenBy().equals(authorName)) {
+                iterator.remove();
+                return;
+            }
         }
+
+        throw new IllegalArgumentException("No review found for the given author.");
     }
 
     public int getId() {
@@ -106,26 +121,27 @@ public abstract class Media {
     public List<Genre> getGenres() {
         return this.genres;
     }
-    public void setGenres(List<Genre> genres) {
-        List<Genre> newGenres = new ArrayList<Genre>();
 
+    public void setGenres(List<Genre> genres) {
+        this.genres = new ArrayList<>();
         if (genres == null || genres.isEmpty()) {
             throw new IllegalArgumentException("At least one genre must be provided.");
         }
         for (Genre genre : genres) {
-            if(isValidGenre(genre)){
-                newGenres.add(genre);
-            }
+                this.addGenre(genre);
         }
-        this.genres = newGenres;
     }
-
     public List<Review> getReviews() {
         return this.reviews;
     }
-
     public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+        this.reviews = new ArrayList<>();
+        if (reviews == null || reviews.isEmpty()) {
+            throw new IllegalArgumentException("At least one review must be provided.");
+        }
+        for (Review review : reviews) {
+            this.addReview(review);
+        }
     }
     public MediaType getMediaType() {
         return mediaType;
