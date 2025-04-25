@@ -36,19 +36,7 @@ public class Anime extends Serie{
     }
 
     public void setDemographic(Demographic demographic) {
-        if (demographic != null && !isValidDemographic(demographic)) {
-            throw new IllegalArgumentException("Invalid demographic: " + demographic);
-        }
         this.demographic = demographic;
-    }
-    private boolean isValidDemographic(Demographic demographic) {
-        return demographic == null || Arrays.asList(
-                Demographic.SHOUNEN,
-                Demographic.SHOUJO,
-                Demographic.SEINEN,
-                Demographic.JOSEI,
-                Demographic.KODOMO
-        ).contains(demographic);
     }
     public String getStudio() {
         return this.studio;
