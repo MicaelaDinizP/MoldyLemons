@@ -69,7 +69,53 @@ This project serves as a playground for practicing **clean architecture**, **jav
 ## 📂 Project Structure
 
 ```text
-??
+devandroid.micaela.moldylemons
+│
+├── data
+│   ├── model
+│   │   ├── Media.java
+│   │   ├── Movie.java
+│   │   ├── Serie.java
+│   │   ├── Anime.java
+│   │   ├── Review.java
+│   │   ├── Couple.java
+│   │   └── enums
+│   │       ├── MediaType.java
+│   │       ├── Genre.java
+│   │       └── Demographic.java
+│   │
+│   ├── local
+│   │   ├── AppDatabase.java
+│   │   └── CoupleDAO.java
+│   │   └── DateConverter.java
+│   │
+│   └── repository
+│       └── CoupleRepository.java
+│
+├── ui
+│   ├── feed
+│   │   ├── FeedFragment.java
+│   │   └── FeedViewModel.java
+│   │
+│   ├── reviewlist
+│   │   ├── ReviewListFragment.java
+│   │   └── ReviewListViewModel.java
+│   │
+│   └── wishlist
+│   │   ├── WishlistFragment.java
+│   │   └── WishlistViewModel.java
+│   │ 
+│   ├── login
+│       ├── LoginActivity.java
+│       └── LoginViewModel.java 
+│   
+│
+├── util
+│   ├── FakeData.java
+│   └── SessionManager.java
+│
+└── MainActivity.java
+
 ```
 
 ---
