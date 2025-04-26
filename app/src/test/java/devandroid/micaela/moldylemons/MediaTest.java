@@ -15,6 +15,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import devandroid.micaela.moldylemons.data.model.Media;
+import devandroid.micaela.moldylemons.data.model.Review;
+import devandroid.micaela.moldylemons.data.model.enums.Genre;
+import devandroid.micaela.moldylemons.data.model.enums.MediaType;
+
 class MediaTest {
     private Media media;
     private Genre validGenre;

@@ -1,4 +1,4 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.model;
 public class Review {
     private int id;
     private String title;

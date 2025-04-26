@@ -1,8 +1,12 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.model;
 
-import java.util.Arrays;
 import java.util.List;
-public class Anime extends Serie{
+
+import devandroid.micaela.moldylemons.data.model.enums.Demographic;
+import devandroid.micaela.moldylemons.data.model.enums.Genre;
+import devandroid.micaela.moldylemons.data.model.enums.MediaType;
+
+public class Anime extends Serie {
     private String studio;
     private Demographic demographic;
 

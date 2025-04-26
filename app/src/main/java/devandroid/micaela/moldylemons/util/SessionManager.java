@@ -1,4 +1,4 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

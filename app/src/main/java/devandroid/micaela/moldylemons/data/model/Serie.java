@@ -1,9 +1,9 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.model;
 
 import java.util.List;
 
-import devandroid.micaela.moldylemons.Genre;
-import devandroid.micaela.moldylemons.Media;
+import devandroid.micaela.moldylemons.data.model.enums.Genre;
+import devandroid.micaela.moldylemons.data.model.enums.MediaType;
 
 public class Serie extends Media {
     private int seasons;

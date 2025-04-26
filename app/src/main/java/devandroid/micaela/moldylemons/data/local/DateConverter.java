@@ -1,4 +1,4 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.local;
 
 import androidx.room.TypeConverter;
 

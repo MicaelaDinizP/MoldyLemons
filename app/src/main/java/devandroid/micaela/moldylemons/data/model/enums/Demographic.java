@@ -1,4 +1,4 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.model.enums;
 
 public enum Demographic {
     SHOUNEN(1, "Shounen", "Boys (10–18 years)", "Action, adventure, friendship"),

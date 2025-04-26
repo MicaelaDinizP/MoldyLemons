@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import devandroid.micaela.moldylemons.data.model.Anime;
+import devandroid.micaela.moldylemons.data.model.enums.Demographic;
+import devandroid.micaela.moldylemons.data.model.enums.Genre;
+import devandroid.micaela.moldylemons.data.model.enums.MediaType;
+
 public class AnimeTest {
     private String title;
     private String description;
@@ -28,7 +33,7 @@ public class AnimeTest {
 
     @Test
     void givenAllValidData_whenCreatingAnime_thenCreateSucessfully() {
-        this.anime = new Anime(this.title, this.description, this.genreList,2,26,"StudioX",Demographic.JOSEI);
+        this.anime = new Anime(this.title, this.description, this.genreList,2,26,"StudioX", Demographic.JOSEI);
 
         assertEquals(this.title, this.anime.getTitle());
         assertEquals(this.description, this.anime.getDescription());

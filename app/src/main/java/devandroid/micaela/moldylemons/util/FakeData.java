@@ -1,4 +1,4 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.util;
 
 import android.app.Application;
 import android.content.Context;
@@ -7,6 +7,10 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import devandroid.micaela.moldylemons.data.local.AppDatabase;
+import devandroid.micaela.moldylemons.data.model.Couple;
+import devandroid.micaela.moldylemons.data.repository.CoupleRepository;
 
 public class FakeData {
 

@@ -11,6 +11,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import devandroid.micaela.moldylemons.data.model.Serie;
+import devandroid.micaela.moldylemons.data.model.enums.Genre;
+import devandroid.micaela.moldylemons.data.model.enums.MediaType;
+
 public class SerieTest {
     private String title;
     private String description;

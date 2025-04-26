@@ -1,16 +1,19 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.ui.login;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
+import devandroid.micaela.moldylemons.MainActivity;
+import devandroid.micaela.moldylemons.R;
+import devandroid.micaela.moldylemons.util.SessionManager;
+import devandroid.micaela.moldylemons.util.FakeData;
 
 
 public class LoginActivity extends AppCompatActivity {

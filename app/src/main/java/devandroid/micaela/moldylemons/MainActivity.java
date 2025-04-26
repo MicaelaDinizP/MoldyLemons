@@ -12,7 +12,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import devandroid.micaela.moldylemons.R;
+import devandroid.micaela.moldylemons.util.SessionManager;
 import devandroid.micaela.moldylemons.databinding.ActivityMainBinding;
+import devandroid.micaela.moldylemons.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 

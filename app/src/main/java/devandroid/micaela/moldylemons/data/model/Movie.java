@@ -1,11 +1,11 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.model;
 
 import java.util.List;
 
-import devandroid.micaela.moldylemons.Genre;
-import devandroid.micaela.moldylemons.Media;
+import devandroid.micaela.moldylemons.data.model.enums.Genre;
+import devandroid.micaela.moldylemons.data.model.enums.MediaType;
 
-public class Movie extends Media{
+public class Movie extends Media {
     private int duration;
     public Movie(int id, String title, String description, List<Genre> genres, int duration){
         super(id, title, description,genres);

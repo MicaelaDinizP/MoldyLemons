@@ -1,4 +1,4 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.local;
 
 import android.content.Context;
 
@@ -7,8 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import devandroid.micaela.moldylemons.CoupleDao;
-import devandroid.micaela.moldylemons.Couple;
+import devandroid.micaela.moldylemons.data.model.Couple;
 
 @Database(entities = {Couple.class}, version = 1)
 @TypeConverters(DateConverter.class)

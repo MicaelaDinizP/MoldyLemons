@@ -1,12 +1,14 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.ui.login;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import devandroid.micaela.moldylemons.data.model.Couple;
+import devandroid.micaela.moldylemons.data.repository.CoupleRepository;
 
 public class LoginViewModel extends AndroidViewModel {
 

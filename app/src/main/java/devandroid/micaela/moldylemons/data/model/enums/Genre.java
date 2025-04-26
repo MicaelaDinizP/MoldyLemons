@@ -1,4 +1,4 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.model.enums;
 
 public enum Genre {
     ACTION(1, "Action", MediaType.ALL),

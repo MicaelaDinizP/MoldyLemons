@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import devandroid.micaela.moldylemons.data.model.Review;
+
 
 public class ReviewTest{
     private Review review;
@@ -48,14 +50,9 @@ public class ReviewTest{
 
     @Test
     void givenNullRequiredFields_whenCreatingReview_thenThrowsIllegalArgumentException() {
-        Review review = new Review(0, null, null, null, null, 0);
-
-        assertEquals(0, review.getId());
-        assertNull(review.getTitle());
-        assertNull(review.getContent());
-        assertEquals("John", review.getWrittenBy());
-        assertEquals(4, review.getRating());
-        assertEquals("👍", review.getReactionEmoji());
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            Review review = new Review(0, null, null, null, null, 0);
+        });
     }
 
     @Test

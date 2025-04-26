@@ -1,10 +1,12 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.repository;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.Date;
+import devandroid.micaela.moldylemons.data.local.AppDatabase;
+import devandroid.micaela.moldylemons.data.local.CoupleDao;
+import devandroid.micaela.moldylemons.data.model.Couple;
 
 public class CoupleRepository {
 
@@ -34,7 +36,6 @@ public class CoupleRepository {
     public void updatePassword(int id, String password) {
         new Thread(() -> coupleDao.updatePassword(id, password)).start();
     }
-
     public LiveData<Couple> getCoupleById(int id) {
         return coupleDao.getCoupleById(id);
     }

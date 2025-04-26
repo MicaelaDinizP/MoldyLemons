@@ -1,4 +1,4 @@
-package devandroid.micaela.moldylemons;
+package devandroid.micaela.moldylemons.data.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
