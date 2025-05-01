@@ -24,11 +24,11 @@ public class FakeData {
                 Log.d("FAKE_DATA", "Inserindo casais de teste...");
 
                 List<Couple> testCouples = Arrays.asList(
-                        new Couple("Alice", "Bob", new Date(), "alicebob", "1234"),
-                        new Couple("Mario", "Luigi", new Date(), "marioluigi", "senha"),
-                        new Couple("Romeu", "Julieta", new Date(), "romeujulieta", "amor"),
-                        new Couple("Ash", "Misty", new Date(), "pokemon", "pikachu"),
-                        new Couple("Um", "Dois", new Date(), "teste", "1234")
+                        new Couple("Alice", "Bob", new Date(), "alicebob1", "senha123"),
+                        new Couple("Mario", "Luigi", new Date(), "marioluigi2", "luigi123"),
+                        new Couple("Romeu", "Julieta", new Date(), "romeujulieta3", "amor1234"),
+                        new Couple("Ash", "Misty", new Date(), "ashmisty1", "poke1234"),
+                        new Couple("Um", "Dois", new Date(), "umdois345", "senha789")
                 );
 
                 for (Couple couple : testCouples) {
