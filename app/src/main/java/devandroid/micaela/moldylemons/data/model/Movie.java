@@ -7,12 +7,12 @@ import devandroid.micaela.moldylemons.data.model.enums.MediaType;
 
 public class Movie extends Media {
     private int duration;
-    public Movie(int id, String title, String description, List<Genre> genres, int duration){
-        super(id, title, description,genres);
+    public Movie(int id, String title, String description, List<Genre> genres, int duration, Couple couple){
+        super(id, title, description,genres, couple);
         this.setDuration(duration);
     }
-    public Movie(String title, String description, List<Genre> genres, int duration){
-        super(title, description, genres);
+    public Movie(String title, String description, List<Genre> genres, int duration, Couple couple){
+        super(title, description, genres, couple);
         this.setDuration(duration);
     }
     @Override

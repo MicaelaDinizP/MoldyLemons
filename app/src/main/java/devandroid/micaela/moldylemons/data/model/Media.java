@@ -1,5 +1,8 @@
 package devandroid.micaela.moldylemons.data.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Ignore;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,23 +16,27 @@ public abstract class Media {
     private String description;
     private List<Genre> genres;
     private List<Review> reviews;
+    @Ignore
+    private Couple couple;
+    private int coupleId;
     protected final MediaType mediaType;
 
-    public Media( int id, String title, String description, List<Genre> genres ){
+    public Media( int id, String title, String description, List<Genre> genres, Couple couple ){
         this.mediaType = defineMediaType();
         setId(id);
         setTitle(title);
         setDescription(description);
         setGenres(genres);
+        setCouple(couple);
         this.reviews = new ArrayList<>();
     }
-    public Media(String title, String description, List<Genre> genres ){
+    public Media(String title, String description, List<Genre> genres, Couple couple){
         this.mediaType = defineMediaType();
         setTitle(title);
         setDescription(description);
         setGenres(genres);
+        setCouple(couple);
         this.reviews = new ArrayList<>();
-
     }
     protected abstract MediaType defineMediaType();
     protected boolean isValidGenre(Genre genre){
@@ -48,7 +55,6 @@ public abstract class Media {
         if (this.genres.contains(genre)) {
             throw new IllegalArgumentException("Genre already added.");
         }
-
         this.genres.add(genre);
     }
     public void removeGenre(Genre genre) {
@@ -149,5 +155,19 @@ public abstract class Media {
     public MediaType getMediaType() {
         return mediaType;
     }
-}
 
+    public Couple getCouple() {
+        return couple;
+    }
+
+    public void setCouple(Couple couple) {
+            if (couple == null) {
+                throw new IllegalArgumentException("Couple cannot be null.");
+            }
+            if (couple.getId() <= 0) {
+                throw new IllegalArgumentException("Couple must have a valid ID.");
+            }
+            this.couple = couple;
+            this.coupleId = couple.getId();
+    }
+}

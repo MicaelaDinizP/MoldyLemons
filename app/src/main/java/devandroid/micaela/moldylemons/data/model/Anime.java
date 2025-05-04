@@ -11,22 +11,22 @@ public class Anime extends Serie {
     private Demographic demographic;
 
     public Anime(int id, String title, String description, List<Genre> genres, int seasons, int totalEpisodes, String studio,
-                 Demographic demographic){
+                 Demographic demographic, Couple couple){
 
-        super(id, title, description,genres, seasons, totalEpisodes);
+        super(id, title, description,genres, seasons, totalEpisodes, couple);
         this.setStudio(studio);
         this.setDemographic(demographic);
     }
     public Anime(String title, String description, List<Genre> genres, int seasons, int totalEpisodes, String studio,
-                 Demographic demographic){
+                 Demographic demographic, Couple couple){
 
-        super(title, description, genres, seasons,totalEpisodes);
+        super(title, description, genres, seasons,totalEpisodes, couple);
         this.setStudio(studio);
         this.setDemographic(demographic);
     }
 
-    public Anime(String title, String description, List<Genre> genres){
-        super(title, description, genres);
+    public Anime(String title, String description, List<Genre> genres, Couple couple){
+        super(title, description, genres, couple);
     }
     protected MediaType defineMediaType() {
         return MediaType.ANIME;

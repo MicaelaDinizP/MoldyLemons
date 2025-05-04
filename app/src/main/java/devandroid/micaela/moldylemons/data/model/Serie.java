@@ -9,18 +9,18 @@ public class Serie extends Media {
     private int seasons;
     private int totalEpisodes;
 
-    public Serie(int id, String title, String description, List<Genre> genres, int seasons, int totalEpisodes){
-        super(id, title, description,genres);
+    public Serie(int id, String title, String description, List<Genre> genres, int seasons, int totalEpisodes, Couple couple){
+        super(id, title, description,genres, couple);
         this.setSeasons(seasons);
         this.setTotalEpisodes(totalEpisodes);
     }
-    public Serie(String title, String description, List<Genre> genres, int seasons, int totalEpisodes){
-        super(title, description, genres);
+    public Serie(String title, String description, List<Genre> genres, int seasons, int totalEpisodes, Couple couple){
+        super(title, description, genres, couple);
         this.setSeasons(seasons);
         this.setTotalEpisodes(totalEpisodes);
     }
-    public Serie(String title, String description, List<Genre> genres){
-        super(title, description, genres);
+    public Serie(String title, String description, List<Genre> genres, Couple couple){
+        super(title, description, genres, couple);
     }
     @Override
     protected MediaType defineMediaType() {

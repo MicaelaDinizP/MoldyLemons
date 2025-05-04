@@ -1,26 +1,44 @@
 package devandroid.micaela.moldylemons.data.model;
-public class Review {
-    private int id;
-    private String title;
-    private String content;
-    private String writtenBy;
-    private String reactionEmoji;
-    private int rating;
 
-    public Review(int id, String title, String content, String writtenBy, String reactionEmoji, int rating) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        setWrittenBy(writtenBy);
-        setReactionEmoji(reactionEmoji);
-        setRating(rating);
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "review")
+public class Review {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    @ColumnInfo(name = "title")
+    private String title;
+    @ColumnInfo(name = "content")
+    private String content;
+    @ColumnInfo(name = "written_by")
+    private String writtenBy;
+    @ColumnInfo(name = "reaction_emoji")
+    private String reactionEmoji;
+    @ColumnInfo(name = "rating")
+    private int rating;
+    @ColumnInfo(name = "couple_id") //é uma chave estrangeira, arrumar isso quando puder
+    private int coupleId;
+
+    public Review(int id, String title, String content, String writtenBy, String reactionEmoji, int rating, int coupleId) {
+        this.setId(id);
+        this.setTitle(title);
+        this.setContent(content);
+        this.setCoupleId(coupleId);
+        this.setWrittenBy(writtenBy);
+        this.setReactionEmoji(reactionEmoji);
+        this.setRating(rating);
     }
-    public Review(String title, String content, String writtenBy, String reactionEmoji, int rating) {
-        this.title = title;
-        this.content = content;
-        setWrittenBy(writtenBy);
-        setReactionEmoji(reactionEmoji);
-        setRating(rating);
+    @Ignore
+    public Review(String title, String content, String writtenBy, String reactionEmoji, int rating, int coupleId) {
+        this.setTitle(title);
+        this.setContent(content);
+        this.setCoupleId(coupleId);
+        this.setWrittenBy(writtenBy);
+        this.setReactionEmoji(reactionEmoji);
+        this.setRating(rating);
     }
 
     public int getId() {
@@ -28,6 +46,9 @@ public class Review {
     }
 
     public void setId(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID must be greater than zero.");
+        }
         this.id = id;
     }
 
@@ -91,5 +112,14 @@ public class Review {
                         (codePoint >= 0x1F1E6 && codePoint <= 0x1F1FF)     // regional indicator symbols (sao as bandeiras)
         );
     }
+    public int getCoupleId() {
+        return coupleId;
+    }
 
+    public void setCoupleId(int coupleId) {
+        if (coupleId <= 0) {
+            throw new IllegalArgumentException("Must be a valid ID.");
+        }
+        this.coupleId = coupleId;
+    }
 }
