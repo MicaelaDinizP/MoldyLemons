@@ -399,8 +399,8 @@ class MediaTest {
         assertEquals(this.media.getReviews().size(), reviews.size());
     }
     static Stream<Arguments> provideValidReviewLists() {
-        Review reviewPersonOne = new Review("Bad", "Im shaking", "bonnie","\"\uD83D\uDE00\"", 5, 1);
-        Review reviewPersonTwo = new Review("Excelent", "im bored", "clyde", "\"\uD83D\uDE00\"",1,1);
+        Review reviewPersonOne = new Review("Bad", "Im shaking", "PersonOne","\"\uD83D\uDE00\"", 5, 1);
+        Review reviewPersonTwo = new Review("Excelent", "im bored", "PersonTwo", "\"\uD83D\uDE00\"",1,1);
         return Stream.of(
                 Arguments.of(Arrays.asList(reviewPersonOne)),
                 Arguments.of(Arrays.asList(reviewPersonOne, reviewPersonTwo))
@@ -483,6 +483,34 @@ class MediaTest {
             this.media.setCouple(this.couple);
         });
         assertEquals("ID must be greater than zero.", exception.getMessage());
+    }
+
+    @Test
+    void givenReviewByPartnerOne_whenAddReviewCalled_thenReviewAddedSuccessfully() {
+        Review review = new Review("Gostei","Ótimo filme!", this.writtenByPersonOne,"😀", 5, 1);
+        this.media.addReview(review);
+
+        assertTrue(this.media.getReviews().contains(review));
+    }
+
+    @Test
+    void givenReviewByPartnerTwo_whenAddReviewCalled_thenReviewAddedSuccessfully() {
+        Review review = new Review("Gostei","Ótimo filme!", this.writtenByPersonTwo,"😀", 5, 1);
+        this.media.addReview(review);
+
+        assertTrue(this.media.getReviews().contains(review));
+    }
+
+    @Test
+    void givenReviewByStranger_whenAddReviewCalled_thenThrowsIllegalArgumentException() {
+        Review review = new Review("Não gostei","Péssimo", "Carlos","😀", 5, 1);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            this.media.addReview(review);
+        });
+
+        assertEquals("Only partners from the couple can submit a review.", exception.getMessage());
+        assertFalse(this.media.getReviews().contains(review));
     }
 
 }
