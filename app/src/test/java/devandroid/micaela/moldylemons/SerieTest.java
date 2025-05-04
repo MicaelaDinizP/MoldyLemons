@@ -7,10 +7,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import devandroid.micaela.moldylemons.data.model.Couple;
 import devandroid.micaela.moldylemons.data.model.Serie;
 import devandroid.micaela.moldylemons.data.model.enums.Genre;
 import devandroid.micaela.moldylemons.data.model.enums.MediaType;
@@ -24,9 +27,13 @@ public class SerieTest {
     private Genre sitcomGenre;
     private List<Genre> genreList;
     private Serie serie;
+    private Couple couple;
 
     @BeforeEach
     void setUp() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2020, Calendar.JANUARY, 1);
+        Date validDate = cal.getTime();
         this.title = "Inception";
         this.description = "A mind-bending thriller";
         this.actionGenre = Genre.ACTION;
@@ -34,12 +41,14 @@ public class SerieTest {
         this.genreList = Arrays.asList(actionGenre, sitcomGenre);
         this.seasons = 2;
         this.totalEpisodes = 30;
-        this.serie = new Serie(this.title, this.description, this.genreList, this.seasons, this.totalEpisodes);
+        this.couple = new Couple("PersonOne", "PersonTwo", validDate, "user_123", "pass1234");
+        this.couple.setId(1);
+        this.serie = new Serie(this.title, this.description, this.genreList, this.seasons, this.totalEpisodes, couple);
     }
 
     @Test
     void givenAllValidData_whenCreatingSerie_thenCreateSucessfully() {
-        this.serie = new Serie(this.title, this.description, this.genreList, this.seasons, this.totalEpisodes);
+        this.serie = new Serie(this.title, this.description, this.genreList, this.seasons, this.totalEpisodes, this.couple);
 
         assertEquals(this.title, this.serie.getTitle());
         assertEquals(this.description, this.serie.getDescription());
@@ -56,7 +65,7 @@ public class SerieTest {
     @Test
     void givenNullGenreList_whenCreatingSerie_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Serie serie = new Serie(this.title, this.description, null,this.seasons, this.totalEpisodes);
+            Serie serie = new Serie(this.title, this.description, null,this.seasons, this.totalEpisodes, this.couple);
         });
         assertEquals("At least one genre must be provided.", exception.getMessage());
     }
@@ -64,7 +73,7 @@ public class SerieTest {
     @Test
     void givenEmptyGenreList_whenCreatingSerie_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Serie serie = new Serie(this.title, this.description, new ArrayList<Genre>(),this.seasons, this.totalEpisodes);
+            Serie serie = new Serie(this.title, this.description, new ArrayList<Genre>(),this.seasons, this.totalEpisodes, this.couple);
         });
         assertEquals("At least one genre must be provided.", exception.getMessage());
     }
@@ -73,7 +82,7 @@ public class SerieTest {
     void givenInvalidGenreList_whenCreatingSerie_thenThrowsIllegalArgumentException() {
         this.genreList = Arrays.asList(Genre.MECHA,Genre.SITCOM, Genre.COMEDY);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Serie serie = new Serie(this.title, this.description, genreList, this.seasons, this.totalEpisodes);
+            Serie serie = new Serie(this.title, this.description, genreList, this.seasons, this.totalEpisodes, this.couple);
         });
         assertEquals("Invalid genre for this type of media.", exception.getMessage());
     }
@@ -81,7 +90,7 @@ public class SerieTest {
     @Test
     void givenNegativeSeasons_whenCreatingSerie_thenThrowsIllegalArgumentException() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Serie(this.title, this.description, this.genreList, -1, this.totalEpisodes);
+            new Serie(this.title, this.description, this.genreList, -1, this.totalEpisodes, this.couple);
         });
         assertEquals("Seasons must be greater than or equal to zero.", exception.getMessage());
     }
@@ -89,7 +98,7 @@ public class SerieTest {
     @Test
     void givenNegativeTotalEpisodes_whenCreatingSerie_thenThrowsIllegalArgumentException() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Serie(this.title, this.description, this.genreList, this.seasons, -5);
+            new Serie(this.title, this.description, this.genreList, this.seasons, -5, this.couple);
         });
         assertEquals("Total episodes must be greater than or equal to zero.", exception.getMessage());
     }
@@ -101,7 +110,7 @@ public class SerieTest {
     @Test
     void whenCreatingSerieWithoutSeasonsAndEpisodes_thenDefaultsAreZero() {
         Serie serie = new Serie("Friends", "Comedy sitcom",
-                Arrays.asList(Genre.COMEDY));
+                Arrays.asList(Genre.COMEDY), this.couple);
 
         assertEquals(0, serie.getSeasons());
         assertEquals(0, serie.getTotalEpisodes());
@@ -145,7 +154,7 @@ public class SerieTest {
 
         for (Genre genre : invalidGenres) {
             IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-                new Serie(this.title, this.description, Arrays.asList(genre), this.seasons, this.totalEpisodes);
+                new Serie(this.title, this.description, Arrays.asList(genre), this.seasons, this.totalEpisodes, this.couple);
             });
             assertEquals("Invalid genre for this type of media.", exception.getMessage());
         }
@@ -156,7 +165,7 @@ public class SerieTest {
         List<Genre> validGenres = Arrays.asList(Genre.SITCOM, Genre.CRIME);
 
         for (Genre genre : validGenres) {
-            Serie serie = new Serie(this.title, this.description, Arrays.asList(genre), this.seasons, this.totalEpisodes);
+            Serie serie = new Serie(this.title, this.description, Arrays.asList(genre), this.seasons, this.totalEpisodes, this.couple);
             assertNotNull(serie);
             assertTrue(serie.getGenres().contains(genre));
         }
@@ -167,7 +176,7 @@ public class SerieTest {
         List<Genre> validGenres = Arrays.asList(Genre.ACTION, Genre.MYSTERY, Genre.DRAMA, Genre.COMEDY, Genre.ROMANCE);
 
         for (Genre genre : validGenres) {
-            Serie serie = new Serie(this.title, this.description, Arrays.asList(genre), this.seasons, this.totalEpisodes);
+            Serie serie = new Serie(this.title, this.description, Arrays.asList(genre), this.seasons, this.totalEpisodes, this.couple);
             assertNotNull(serie);
             assertTrue(serie.getGenres().contains(genre));
         }

@@ -6,10 +6,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import devandroid.micaela.moldylemons.data.model.Couple;
 import devandroid.micaela.moldylemons.data.model.Movie;
 import devandroid.micaela.moldylemons.data.model.enums.Genre;
 import devandroid.micaela.moldylemons.data.model.enums.MediaType;
@@ -21,16 +24,20 @@ public class MovieTest {
     private Genre actionGenre;
     private List<Genre> genreList;
     private Movie movie;
-
+    private Couple couple;
     @BeforeEach
     void setUp() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2020, Calendar.JANUARY, 1);
+        Date validDate = cal.getTime();
         this.title = "Inception";
         this.description = "A mind-bending thriller";
         this.duration = 148;
         this.actionGenre = Genre.ACTION;
         this.genreList = Arrays.asList(actionGenre);
-
-        this.movie = new Movie(title, description, genreList, duration);
+        this.couple = new Couple("PersonOne", "PersonTwo", validDate, "user_123", "pass1234");
+        this.couple.setId(1);
+        this.movie = new Movie(title, description, genreList, duration, couple);
     }
 
     @ParameterizedTest
@@ -51,7 +58,7 @@ public class MovieTest {
     @Test
     void givenNullGenreList_whenCreatingSerie_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Movie movie = new Movie(this.title, this.description, null, 100);
+            Movie movie = new Movie(this.title, this.description, null, 100, this.couple);
         });
         assertEquals("At least one genre must be provided.", exception.getMessage());
     }
@@ -59,7 +66,7 @@ public class MovieTest {
     @Test
     void givenEmptyGenreList_whenCreatingSerie_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Movie movie = new Movie(this.title, this.description, new ArrayList<Genre>(), 100);
+            Movie movie = new Movie(this.title, this.description, new ArrayList<Genre>(), 100, this.couple);
         });
         assertEquals("At least one genre must be provided.", exception.getMessage());
     }
@@ -68,7 +75,7 @@ public class MovieTest {
     void givenInvalidGenreList_whenCreatingSerie_thenThrowsIllegalArgumentException() {
         this.genreList = Arrays.asList(Genre.MECHA,Genre.SITCOM, Genre.COMEDY);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Movie movie = new Movie(this.title, this.description, genreList, 100);
+            Movie movie = new Movie(this.title, this.description, genreList, 100, this.couple);
         });
         assertEquals("Invalid genre for this type of media.", exception.getMessage());
     }
@@ -82,7 +89,7 @@ public class MovieTest {
     @ValueSource(ints = {0,-1})
     void givenNonPositiveDuration_whenCreatingMovie_thenThrowsIllegalArgumentException(int invalidDuration) {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Movie movie = new Movie(this.title, this.description, this.genreList, invalidDuration);
+            Movie movie = new Movie(this.title, this.description, this.genreList, invalidDuration, this.couple);
         });
         assertEquals("Duration must be a positive number.", exception.getMessage());
     }
@@ -90,7 +97,7 @@ public class MovieTest {
     @Test
     void givenTooLargeDuration_whenCreatingMovie_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Movie movie = new Movie(this.title, this.description, this.genreList, 1000 * 60 + 1);
+            Movie movie = new Movie(this.title, this.description, this.genreList, 1000 * 60 + 1, this.couple);
         });
         assertEquals("Duration is unreasonably long.", exception.getMessage());
     }

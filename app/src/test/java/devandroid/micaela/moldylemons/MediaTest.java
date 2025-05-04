@@ -8,6 +8,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -15,6 +17,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import devandroid.micaela.moldylemons.data.model.Couple;
 import devandroid.micaela.moldylemons.data.model.Media;
 import devandroid.micaela.moldylemons.data.model.Review;
 import devandroid.micaela.moldylemons.data.model.enums.Genre;
@@ -28,13 +31,14 @@ class MediaTest {
     private String writtenByPersonOne;
     private String writtenByPersonTwo;
     private Review reviewPersonTwo;
+    private Couple couple;
 
     static class TestMedia extends Media {
-        public TestMedia(String title, String description, List<Genre> genres) {
-            super(title, description, genres);
+        public TestMedia(String title, String description, List<Genre> genres, Couple couple) {
+            super(title, description, genres, couple);
         }
-        public TestMedia(int id,String title, String description, List<Genre> genres) {
-            super(id,title, description, genres);
+        public TestMedia(int id,String title, String description, List<Genre> genres, Couple couple) {
+            super(id,title, description, genres, couple);
         }
         @Override
         protected MediaType defineMediaType() {
@@ -44,13 +48,18 @@ class MediaTest {
 
     @BeforeEach
     void setUp() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2020, Calendar.JANUARY, 1);
+        Date validDate = cal.getTime();
         this.validGenre = Genre.ACTION;
         this.invalidGenre = Genre.ISEKAI;
-        this.media = new TestMedia("Test Title", "Test Description", Arrays.asList(validGenre));
         this.writtenByPersonOne = "PersonOne";
         this.writtenByPersonTwo = "PersonTwo";
-        this.reviewPersonOne = new Review("Review", "Content", this.writtenByPersonOne ,"😀",5);
-        this.reviewPersonTwo = new Review("Review", "Content", this.writtenByPersonTwo ,"😀",5);
+        this.couple = new Couple(this.writtenByPersonOne, this.writtenByPersonTwo, validDate, "user_123", "pass1234");
+        this.couple.setId(1);
+        this.media = new TestMedia("Test Title", "Test Description", Arrays.asList(validGenre), couple);
+        this.reviewPersonOne = new Review("Review", "Content", this.writtenByPersonOne ,"😀",5,1);
+        this.reviewPersonTwo = new Review("Review", "Content", this.writtenByPersonTwo ,"😀",5,1);
     }
 
     @Test
@@ -59,7 +68,7 @@ class MediaTest {
         validGenres.add(Genre.ACTION);
         validGenres.add(Genre.COMEDY);
 
-        Media validMedia = new TestMedia("TheBestMovie", "Action and comedy movie", validGenres);
+        Media validMedia = new TestMedia("TheBestMovie", "Action and comedy movie", validGenres, this.couple);
         validMedia.addReview(this.reviewPersonOne);
         validMedia.addReview(this.reviewPersonTwo);
         assertEquals("TheBestMovie", validMedia.getTitle());
@@ -76,7 +85,7 @@ class MediaTest {
         validGenres.add(Genre.COMEDY);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Media invalidMedia = new TestMedia(null, "Action and comedy movie", validGenres);
+            Media invalidMedia = new TestMedia(null, "Action and comedy movie", validGenres, this.couple);
         });
         assertEquals("Title cannot be null or empty.", exception.getMessage());
     }
@@ -89,7 +98,7 @@ class MediaTest {
         validGenres.add(Genre.COMEDY);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Media invalidMedia = new TestMedia(invalidTitle, "Action and comedy movie", validGenres);
+            Media invalidMedia = new TestMedia(invalidTitle, "Action and comedy movie", validGenres, this.couple);
         });
         assertEquals("Title cannot be null or empty.", exception.getMessage());
     }
@@ -101,7 +110,7 @@ class MediaTest {
         invalidGenres.add(Genre.COMEDY);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Media invalidMedia = new TestMedia("TheBestMovie", "Action and comedy movie", invalidGenres);
+            Media invalidMedia = new TestMedia("TheBestMovie", "Action and comedy movie", invalidGenres, this.couple);
         });
         assertEquals("Invalid genre for this type of media.", exception.getMessage());
     }
@@ -110,7 +119,7 @@ class MediaTest {
     void givenNullGenreList_whenCreatingMedia_thenThrowsIllegalException(){
         List<Genre> invalidGenres = null;
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Media invalidMedia = new TestMedia("TheBestMovie", "Action and comedy movie", invalidGenres);
+            Media invalidMedia = new TestMedia("TheBestMovie", "Action and comedy movie", invalidGenres, this.couple);
         });
         assertEquals("At least one genre must be provided.", exception.getMessage());
     }
@@ -120,9 +129,31 @@ class MediaTest {
         List<Genre> invalidGenres = new ArrayList<>();
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Media invalidMedia = new TestMedia("TheBestMovie", "Action and comedy movie", invalidGenres);
+            Media invalidMedia = new TestMedia("TheBestMovie", "Action and comedy movie", invalidGenres, this.couple);
         });
         assertEquals("At least one genre must be provided.", exception.getMessage());
+    }
+    @Test
+    void givenNullCouple_whenCreatingMedia_thenThrowsIllegalException(){
+        List<Genre> validGenres = new ArrayList<>();
+        validGenres.add(Genre.ACTION);
+        validGenres.add(Genre.COMEDY);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            Media invalidMedia = new TestMedia("TheBestMovie", "Action and comedy movie", validGenres, null);
+        });
+        assertEquals("Couple cannot be null.", exception.getMessage());
+    }
+    @Test
+    void givenCoupleWithInvalidId_whenCreatingMedia_thenThrowsIllegalException(){
+        List<Genre> validGenres = new ArrayList<>();
+        validGenres.add(Genre.ACTION);
+        validGenres.add(Genre.COMEDY);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            this.couple.setId(0);
+            Media invalidMedia = new TestMedia("TheBestMovie", "Action and comedy movie", validGenres, this.couple);
+        });
+        assertEquals("ID must be greater than zero.", exception.getMessage());
     }
 
     @Test
@@ -368,8 +399,8 @@ class MediaTest {
         assertEquals(this.media.getReviews().size(), reviews.size());
     }
     static Stream<Arguments> provideValidReviewLists() {
-        Review reviewPersonOne = new Review("Bad", "Im shaking", "bonnie","\"\uD83D\uDE00\"", 5);
-        Review reviewPersonTwo = new Review("Excelent", "im bored", "clyde", "\"\uD83D\uDE00\"",1);
+        Review reviewPersonOne = new Review("Bad", "Im shaking", "bonnie","\"\uD83D\uDE00\"", 5, 1);
+        Review reviewPersonTwo = new Review("Excelent", "im bored", "clyde", "\"\uD83D\uDE00\"",1,1);
         return Stream.of(
                 Arguments.of(Arrays.asList(reviewPersonOne)),
                 Arguments.of(Arrays.asList(reviewPersonOne, reviewPersonTwo))
@@ -423,4 +454,35 @@ class MediaTest {
         });
         assertEquals("Genre already added.", exception.getMessage());
     }
+    @Test
+    void givenValidCouple_whenSettingCouple_thenSucceeds(){
+        List<Genre> validGenres = new ArrayList<>();
+        validGenres.add(Genre.ACTION);
+        validGenres.add(Genre.COMEDY);
+        this.media.setCouple(this.couple);
+        assertEquals(this.couple, this.media.getCouple());
+    }
+
+    @Test
+    void givenNullCouple_whenSettingCouple_thenThrowsIllegalException(){
+        List<Genre> validGenres = new ArrayList<>();
+        validGenres.add(Genre.ACTION);
+        validGenres.add(Genre.COMEDY);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            this.media.setCouple(null);
+        });
+        assertEquals("Couple cannot be null.", exception.getMessage());
+    }
+    @Test
+    void givenCoupleWithInvalidId_whenSettingCouple_thenThrowsIllegalException(){
+        List<Genre> validGenres = new ArrayList<>();
+        validGenres.add(Genre.ACTION);
+        validGenres.add(Genre.COMEDY);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            this.couple.setId(-1);
+            this.media.setCouple(this.couple);
+        });
+        assertEquals("ID must be greater than zero.", exception.getMessage());
+    }
+
 }

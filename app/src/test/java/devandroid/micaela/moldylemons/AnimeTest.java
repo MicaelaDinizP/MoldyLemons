@@ -10,9 +10,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import devandroid.micaela.moldylemons.data.model.Anime;
+import devandroid.micaela.moldylemons.data.model.Couple;
 import devandroid.micaela.moldylemons.data.model.enums.Demographic;
 import devandroid.micaela.moldylemons.data.model.enums.Genre;
 import devandroid.micaela.moldylemons.data.model.enums.MediaType;
@@ -22,18 +25,25 @@ public class AnimeTest {
     private String description;
     private List<Genre> genreList;
     private Anime anime;
+    private Couple couple;
 
     @BeforeEach
     void setUp() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2020, Calendar.JANUARY, 1);
+        Date validDate = cal.getTime();
         this.title = "Anime X Anime";
         this.description = "A mind-bending Anime";
         this.genreList = Arrays.asList(Genre.MECHA, Genre.COMEDY);
-        this.anime = new Anime(this.title, this.description, this.genreList);
+        this.couple = new Couple("PersonOne", "PersonTwo", validDate, "user_123", "pass1234");
+        this.couple.setId(1);
+        this.anime = new Anime(this.title, this.description, this.genreList, this.couple);
     }
 
     @Test
     void givenAllValidData_whenCreatingAnime_thenCreateSucessfully() {
-        this.anime = new Anime(this.title, this.description, this.genreList,2,26,"StudioX", Demographic.JOSEI);
+        this.anime = new Anime(this.title, this.description, this.genreList,2,26,"StudioX", Demographic.JOSEI,
+                this.couple);
 
         assertEquals(this.title, this.anime.getTitle());
         assertEquals(this.description, this.anime.getDescription());
@@ -56,7 +66,7 @@ public class AnimeTest {
     @Test
     void givenNullGenreList_whenCreatingAnime_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Anime anime = new Anime(this.title, this.description, null,2,26,"StudioX",Demographic.JOSEI);
+            Anime anime = new Anime(this.title, this.description, null,2,26,"StudioX",Demographic.JOSEI, this.couple);
         });
         assertEquals("At least one genre must be provided.", exception.getMessage());
     }
@@ -65,7 +75,7 @@ public class AnimeTest {
     void givenEmptyGenreList_whenCreatingAnime_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             Anime anime = new Anime(this.title, this.description, new ArrayList<Genre>(),2,26,
-                    "StudioX",Demographic.JOSEI);
+                    "StudioX",Demographic.JOSEI, this.couple);
         });
         assertEquals("At least one genre must be provided.", exception.getMessage());
     }
@@ -75,7 +85,7 @@ public class AnimeTest {
         this.genreList = Arrays.asList(Genre.MECHA,Genre.SITCOM, Genre.COMEDY);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             Anime anime = new Anime(this.title, this.description, genreList,2,26,
-                    "StudioX",Demographic.JOSEI);
+                    "StudioX",Demographic.JOSEI, this.couple);
         });
         assertEquals("Invalid genre for this type of media.", exception.getMessage());
     }

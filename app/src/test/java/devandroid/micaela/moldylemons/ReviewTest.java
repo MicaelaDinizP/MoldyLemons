@@ -1,6 +1,5 @@
 package devandroid.micaela.moldylemons;
 
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import devandroid.micaela.moldylemons.data.model.Review;
-
 
 public class ReviewTest{
     private Review review;
@@ -22,7 +20,7 @@ public class ReviewTest{
         this.title = "Best movie ever!";
         this.content = "This movie is very funny";
         this.writtenBy = "Mariah";
-        this.review = new Review(1,title ,content , writtenBy, "😊",5 );
+        this.review = new Review(1,title ,content , writtenBy, "😊",5, 1);
     }
 
     @Test
@@ -38,9 +36,9 @@ public class ReviewTest{
 
     @Test
     void givenOnlyRequiredFields_whenCreatingReview_thenReviewIsCreatedSuccessfully() {
-        Review review = new Review(0, null, null, "John", "👍", 4);
+        Review review = new Review(1, null, null, "John", "👍", 4, 1);
 
-        assertEquals(0, review.getId());
+        assertEquals(1, review.getId());
         assertNull(review.getTitle());
         assertNull(review.getContent());
         assertEquals("John", review.getWrittenBy());
@@ -51,14 +49,14 @@ public class ReviewTest{
     @Test
     void givenNullRequiredFields_whenCreatingReview_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Review review = new Review(0, null, null, null, null, 0);
+            Review review = new Review(0, null, null, null, null, 0, 1);
         });
     }
 
     @Test
     void givenEmptyWrittenBy_whenCreatingReview_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Review(2, "Title", "Description", "", "😐", 3);
+            new Review(2, "Title", "Description", "", "😐", 3, 1);
         });
 
         assertEquals("Author cannot be null or empty.", exception.getMessage());
@@ -67,7 +65,7 @@ public class ReviewTest{
     @Test
     void givenNullWrittenBy_whenCreatingReview_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Review(2, "Title", "Description", null, "😐", 3);
+            new Review(2, "Title", "Description", null, "😐", 3, 1);
         });
 
         assertEquals("Author cannot be null or empty.", exception.getMessage());
@@ -76,7 +74,7 @@ public class ReviewTest{
     @Test
     void givenNullReactionEmoji_whenCreatingReview_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Review(2, "Title", "Description", "Carla", null, 5);
+            new Review(2, "Title", "Description", "Carla", null, 5, 1);
         });
 
         assertEquals("Reaction must be a valid emoji.", exception.getMessage());
@@ -84,7 +82,7 @@ public class ReviewTest{
     @Test
     void givenInvalidReactionEmoji_whenCreatingReview_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Review(2, "Title", "Description", "Carla", "abc123", 5);
+            new Review(2, "Title", "Description", "Carla", "abc123", 5,1);
         });
 
         assertEquals("Reaction must be a valid emoji.", exception.getMessage());
@@ -93,7 +91,7 @@ public class ReviewTest{
     @Test
     void givenZeroRating_whenCreatingReview_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Review(2, "Title", "Description", "Meggie", "😐", 0);
+            new Review(2, "Title", "Description", "Meggie", "😐", 0, 1);
         });
 
         assertEquals("Rating must be between 1 and 5.", exception.getMessage());
@@ -101,7 +99,7 @@ public class ReviewTest{
     @Test
     void givenInvalidRating_whenCreatingReview_thenThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Review(2, "Title", "Description", "Meggie", "😐", 15);
+            new Review(2, "Title", "Description", "Meggie", "😐", 15, 1);
         });
 
         assertEquals("Rating must be between 1 and 5.", exception.getMessage());
@@ -142,7 +140,7 @@ public class ReviewTest{
     @ParameterizedTest
     @ValueSource(strings = {"😀", "🌍", "🚀", "⚗️", "🟠", "🠔", "🤖", "🫠", "☀️", "✂️","🇧🇷"})
     void givenValidEmojis_whenSettingReactionEmoji_thenDoesNotThrow(String emoji) {
-        Review review = new Review(1, "A", "B", "C", "😊", 5);
+        Review review = new Review(1, "A", "B", "C", "😊", 5, 1);
         assertDoesNotThrow(() -> this.review.setReactionEmoji(emoji));
     }
 
@@ -170,5 +168,18 @@ public class ReviewTest{
         assertEquals(" ", this.review.getTitle());
         assertEquals(" ", this.review.getContent());
 
+    }
+    @ParameterizedTest
+    @ValueSource(ints = {0, -1})
+    void givenInvalidId_whenSettingId_thenThrowsIllegalArgumentException(int invalidId){
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            review.setId(invalidId);
+        });
+        assertEquals("ID must be greater than zero.", exception.getMessage());
+    }
+    @Test
+    void givenValidId_whenSettingId_thenSucceeds(){
+        this.review.setId(4);
+        assertEquals(4, review.getId());
     }
 }
