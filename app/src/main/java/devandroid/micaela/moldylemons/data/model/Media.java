@@ -68,11 +68,19 @@ public abstract class Media {
 
         this.genres.remove(genre);
     }
-     public void addReview(Review review) {
+    private boolean isAuthorFromCouple(String author) {
+        return couple != null &&
+                (author.equals(couple.getPartnerOneName()) || author.equals(couple.getPartnerTwoName()));
+    }
+
+    public void addReview(Review review) {
         if (review == null) {
             throw new IllegalArgumentException("Review cannot be null.");
         }
-        for (Review r : reviews) {
+         if (!isAuthorFromCouple(review.getWrittenBy())) {
+             throw new IllegalArgumentException("Only partners from the couple can submit a review.");
+         }
+         for (Review r : reviews) {
             if (r.getWrittenBy().equals(review.getWrittenBy())) {
                 throw new IllegalArgumentException("User has already submitted a review for this media.");
             }
