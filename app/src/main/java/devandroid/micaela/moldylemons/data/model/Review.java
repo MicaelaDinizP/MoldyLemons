@@ -2,10 +2,29 @@ package devandroid.micaela.moldylemons.data.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "review")
+@Entity(
+        tableName = "review",
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Couple.class,
+                        parentColumns = "id",
+                        childColumns = "couple_id",
+                        onDelete = ForeignKey.CASCADE,
+                        onUpdate = ForeignKey.CASCADE
+                ),
+                @ForeignKey(
+                        entity = MediaEntity.class,
+                        parentColumns = "id",
+                        childColumns = "media_id",
+                        onDelete = ForeignKey.CASCADE,
+                        onUpdate = ForeignKey.CASCADE
+                )
+        }
+)
 public class Review {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -19,10 +38,12 @@ public class Review {
     private String reactionEmoji;
     @ColumnInfo(name = "rating")
     private int rating;
-    @ColumnInfo(name = "couple_id") //é uma chave estrangeira, arrumar isso quando puder
+    @ColumnInfo(name = "couple_id")
     private int coupleId;
+    @ColumnInfo(name = "media_id")
+    private int mediaId;
 
-    public Review(int id, String title, String content, String writtenBy, String reactionEmoji, int rating, int coupleId) {
+    public Review(int id, String title, String content, String writtenBy, String reactionEmoji, int rating, int coupleId, int mediaId) {
         this.setId(id);
         this.setTitle(title);
         this.setContent(content);
@@ -30,15 +51,17 @@ public class Review {
         this.setWrittenBy(writtenBy);
         this.setReactionEmoji(reactionEmoji);
         this.setRating(rating);
+        this.setMediaId(mediaId);
     }
     @Ignore
-    public Review(String title, String content, String writtenBy, String reactionEmoji, int rating, int coupleId) {
+    public Review(String title, String content, String writtenBy, String reactionEmoji, int rating, int coupleId, int mediaId) {
         this.setTitle(title);
         this.setContent(content);
         this.setCoupleId(coupleId);
         this.setWrittenBy(writtenBy);
         this.setReactionEmoji(reactionEmoji);
         this.setRating(rating);
+        this.setMediaId(mediaId);
     }
 
     public int getId() {
@@ -46,9 +69,7 @@ public class Review {
     }
 
     public void setId(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("ID must be greater than zero.");
-        }
+        this.verifyId(id);
         this.id = id;
     }
 
@@ -117,9 +138,23 @@ public class Review {
     }
 
     public void setCoupleId(int coupleId) {
-        if (coupleId <= 0) {
+        this.verifyId(coupleId);
+        this.coupleId = coupleId;
+    }
+
+    public int getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(int mediaId) {
+        this.verifyId(mediaId);
+        this.mediaId = mediaId;
+    }
+
+    private boolean verifyId(int id){
+        if(id <= 0) {
             throw new IllegalArgumentException("Must be a valid ID.");
         }
-        this.coupleId = coupleId;
+        return true;
     }
 }
