@@ -57,9 +57,9 @@ class MediaTest {
         this.writtenByPersonTwo = "PersonTwo";
         this.couple = new Couple(this.writtenByPersonOne, this.writtenByPersonTwo, validDate, "user_123", "pass1234");
         this.couple.setId(1);
-        this.media = new TestMedia("Test Title", "Test Description", Arrays.asList(validGenre), couple);
-        this.reviewPersonOne = new Review("Review", "Content", this.writtenByPersonOne ,"😀",5,1);
-        this.reviewPersonTwo = new Review("Review", "Content", this.writtenByPersonTwo ,"😀",5,1);
+        this.media = new TestMedia("Test Title", "Test Description", Arrays.asList(validGenre), this.couple);
+        this.reviewPersonOne = new Review("Review", "Content", this.writtenByPersonOne ,"😀",5,1,1);
+        this.reviewPersonTwo = new Review("Review", "Content", this.writtenByPersonTwo ,"😀",5,1,1);
     }
 
     @Test
@@ -399,8 +399,8 @@ class MediaTest {
         assertEquals(this.media.getReviews().size(), reviews.size());
     }
     static Stream<Arguments> provideValidReviewLists() {
-        Review reviewPersonOne = new Review("Bad", "Im shaking", "PersonOne","\"\uD83D\uDE00\"", 5, 1);
-        Review reviewPersonTwo = new Review("Excelent", "im bored", "PersonTwo", "\"\uD83D\uDE00\"",1,1);
+        Review reviewPersonOne = new Review("Bad", "Im shaking", "PersonOne","\"\uD83D\uDE00\"", 5, 1, 1);
+        Review reviewPersonTwo = new Review("Excelent", "im bored", "PersonTwo", "\"\uD83D\uDE00\"",1,1,1);
         return Stream.of(
                 Arguments.of(Arrays.asList(reviewPersonOne)),
                 Arguments.of(Arrays.asList(reviewPersonOne, reviewPersonTwo))
@@ -487,7 +487,7 @@ class MediaTest {
 
     @Test
     void givenReviewByPartnerOne_whenAddReviewCalled_thenReviewAddedSuccessfully() {
-        Review review = new Review("Gostei","Ótimo filme!", this.writtenByPersonOne,"😀", 5, 1);
+        Review review = new Review("Gostei","Ótimo filme!", this.writtenByPersonOne,"😀", 5, 1,1);
         this.media.addReview(review);
 
         assertTrue(this.media.getReviews().contains(review));
@@ -495,7 +495,7 @@ class MediaTest {
 
     @Test
     void givenReviewByPartnerTwo_whenAddReviewCalled_thenReviewAddedSuccessfully() {
-        Review review = new Review("Gostei","Ótimo filme!", this.writtenByPersonTwo,"😀", 5, 1);
+        Review review = new Review("Gostei","Ótimo filme!", this.writtenByPersonTwo,"😀", 5, 1,1);
         this.media.addReview(review);
 
         assertTrue(this.media.getReviews().contains(review));
@@ -503,7 +503,7 @@ class MediaTest {
 
     @Test
     void givenReviewByStranger_whenAddReviewCalled_thenThrowsIllegalArgumentException() {
-        Review review = new Review("Não gostei","Péssimo", "Carlos","😀", 5, 1);
+        Review review = new Review("Não gostei","Péssimo", "Carlos","😀", 5, 1,1);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             this.media.addReview(review);
