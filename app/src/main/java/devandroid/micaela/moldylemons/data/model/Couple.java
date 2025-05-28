@@ -2,6 +2,7 @@ package devandroid.micaela.moldylemons.data.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -29,12 +30,29 @@ public class Couple {
     @ColumnInfo(name = "password")
     private String password;
 
+    public Couple(int id,String partnerOneName, String partnerTwoName, Date anniversaryDate, String login, String password) {
+        this.setId(id);
+        this.setPartnerOneName(partnerOneName);
+        this.setPartnerTwoName(partnerTwoName);
+        this.setAnniversaryDate(anniversaryDate);
+        this.setLogin(login);
+        this.setPassword(password);
+    }
+    @Ignore
     public Couple(String partnerOneName, String partnerTwoName, Date anniversaryDate, String login, String password) {
         this.setPartnerOneName(partnerOneName);
         this.setPartnerTwoName(partnerTwoName);
         this.setAnniversaryDate(anniversaryDate);
         this.setLogin(login);
         this.setPassword(password);
+    }
+
+    @Ignore
+    public Couple(String partnerOneName, String partnerTwoName, Date anniversaryDate, String login) {
+        this.setPartnerOneName(partnerOneName);
+        this.setPartnerTwoName(partnerTwoName);
+        this.setAnniversaryDate(anniversaryDate);
+        this.setLogin(login);
     }
 
     private boolean isInvalidLogin( String login ) {
