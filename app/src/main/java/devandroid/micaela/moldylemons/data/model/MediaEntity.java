@@ -3,6 +3,7 @@ package devandroid.micaela.moldylemons.data.model;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -23,7 +24,10 @@ import java.util.List;
                 childColumns = "couple_id",
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE
-        )
+        ),
+        indices = {
+        @Index(value = "couple_id")
+}
 )
 public class MediaEntity {
 
